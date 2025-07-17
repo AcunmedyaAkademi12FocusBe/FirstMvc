@@ -1,3 +1,24 @@
-<form method="post">
+@{
+    var age = DateTime.Now.Year - (int)(ViewData["BirthDate"]);
+    ViewData["Title"] = "Ana sayfa";
+}
+
+<h3>Merhaba ben @ViewData["Name"], @age yaşındayım.</h3>
+
+@if (TempData["ErrorMessage"] is not null)
+{
+    <p>@TempData["ErrorMessage"]</p>
+}
+
+<form method="post" action="/home/add">
     <input type="text" name="fullname" placeholder="ad soyad"> <button>ekle</button>
 </form>
+
+@section RightMenu {
+    <h4>Ana sayfa</h4>
+<ul>
+    <li>yapılacak 1</li>
+    <li>yapılacak 2</li>
+    <li>yapılacak 3</li>
+</ul>
+}

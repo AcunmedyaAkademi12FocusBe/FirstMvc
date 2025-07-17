@@ -1,3 +1,11 @@
+@{
+    // var title = "Mvc Projesi";
+    // if (ViewData["Title"] is not null)
+    // {
+    //     title = $"{ViewData["Title"]} - {title}";
+    // }
+}
+
 <!doctype html>
 <html lang="tr">
 <head>
@@ -5,10 +13,18 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mvc Projesi</title>
+    <title>@ViewData["Title"] - Mvc Projesi</title>
 </head>
 <body>
     <h1>Merhaba MVC Dünyası</h1>
-    @RenderBody()
+    @await Html.PartialAsync("_TopMenu")
+    <div style="border: 3px solid black; display: grid; grid-template-columns: auto 300px;">
+        <div style="padding: 20px;">
+            @RenderBody()
+        </div>
+        <div style="padding: 20px; border-left: 3px solid black;">
+            @await RenderSectionAsync("RightMenu", false)
+        </div>
+    </div>
 </body>
 </html>
