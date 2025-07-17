@@ -1,0 +1,35 @@
+@model TodoViewModel
+@{
+    Layout = "_TodoLayout";
+}
+
+<h1>Todo List</h1>
+@if (TempData["ErrorMsg"] is not null)
+{
+    <p style="color: red;">@TempData["ErrorMsg"]</p>
+}
+<form method="post" autocomplete="off">
+    <input required="" type="text" name="Task" placeholder="Yapılacak iş">
+    <button>➕</button>
+</form>
+<ul style="list-style: none">
+    @foreach (var todo in Model.Todos)
+    {
+        <li>
+            
+            @if (todo.Completed)
+            {
+                @Html.ActionLink("(➕)", "MarkIncomplete", new { todo.Id })
+                @* <a href="/todo/markincomplete/@todo.Id">➕</a> *@
+            }
+            else
+            {
+                @Html.ActionLink("(➖)", "MarkComplete", new { todo.Id })
+            }
+            
+            @todo.Task -
+            (<a href="/todo/index/@todo.Id">✏️</a> /
+            <a href="/todo/remove/@todo.Id" onclick="return confirm('emin misin?')">❌</a>)
+        </li>
+    }
+</ul>
