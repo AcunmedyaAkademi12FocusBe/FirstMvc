@@ -11,7 +11,7 @@ public class TodoController(AppDbContext context) : Controller
     public IActionResult Index(int? id) => View(new TodoViewModel
     {
         TodoId = id,
-        Todos = context.Todos.ToArray()
+        Todos = context.Todos.ToList()
     });
     
     [HttpPost]
@@ -37,7 +37,7 @@ public class TodoController(AppDbContext context) : Controller
             TempData["ErrorMsg"] = "Eksik veya hatalı giriş yaptınız.";
         }
         
-        return View(new TodoViewModel{ Todos = context.Todos.ToArray() });
+        return View(new TodoViewModel{ Todos = context.Todos.ToList() });
     }
 
     public IActionResult Remove(int id)
@@ -84,6 +84,25 @@ public class TodoController(AppDbContext context) : Controller
         
         return RedirectToAction(nameof(Index));
     }
-    
-    
+
+    [HttpPost]
+    public IActionResult Update(int id, TodoAddDto model)
+    {
+        if (!ModelState.IsValid)
+        {
+            ViewData["Msg"] = "Eksik bilgi var.";
+            return View("Error");
+        }
+        
+        if (context.Todos.Find(id) is not Todo todo)
+        {
+            ViewData["Msg"] = "Bu todo bulunamadı.";
+            return View("Error");
+        }
+        
+        todo.Task = model.Task;
+        context.SaveChanges();
+        
+        return RedirectToAction(nameof(Index));
+    }
 }

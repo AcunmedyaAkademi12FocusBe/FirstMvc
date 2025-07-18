@@ -1,0 +1,32 @@
+@using Microsoft.AspNetCore.Html
+@model TodoViewModel
+@{
+    IHtmlContent CreateTodoStatus(int id, bool completed)
+    {
+        return Html.ActionLink(completed ? "(➕)" : "(➖)", completed ? "MarkIncomplete" : "MarkComplete", new { id });
+    }
+}
+
+<ul style="list-style: none">
+    @foreach (var todo in Model.Todos)
+    {
+        <li>
+            @if (todo.Id == Model.TodoId)
+            {
+                <form autocomplete="off" method="post" action="/todo/update/@todo.Id">
+                    <input required name="Task" placeholder="@todo.Task" value="@todo.Task"> <button>✔️️</button> <a href="/todo">✖️</a>
+                </form>
+            }
+            else
+            {
+                <text>
+                    @CreateTodoStatus(todo.Id, todo.Completed)
+                    @todo.Task -
+                    (<a href="/todo/index/@todo.Id">✏️</a > /
+                    <a href="/todo/remove/@todo.Id" onclick="return confirm('emin misin?')">❌</a >)
+                </text>
+            }
+
+        </li>
+    }
+</ul>
